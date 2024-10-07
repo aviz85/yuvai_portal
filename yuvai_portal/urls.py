@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from core.views import AIToolViewSet, CreationViewSet, CommentViewSet
+
+router = DefaultRouter()
+router.register(r'aitools', AIToolViewSet)
+router.register(r'creations', CreationViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+]
